@@ -10,6 +10,15 @@ from jisho.serializers import DefinitionSerializer
 from django.template import Context, RequestContext, loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+import sys, traceback
+
+from rest_framework import permissions
+
 
 def in_group(user, groupname):
   return u.groups.filter(name=groupname).count() == 0
@@ -71,30 +80,29 @@ class JSONResponse(HttpResponse):
     kwargs['content_type'] = 'application/json'
     super(JSONResponse, self).__init__(content, **kwargs)
 
-@csrf_exempt
-def definition_list(request):
-  """
-  List all dictonary entries, or create a new one.
-  """
-  if request.method == 'GET':
+
+
+class DefinitionList(APIView):
+  '''
+  List all definitions, or create a new snippet.
+  '''
+  model = Definition
+
+  def get(self, request, format=None):
     definitions = Definition.objects.all()
     serializer = DefinitionSerializer(definitions, many=True)
-    return JSONResponse(serializer.data)
+    return Response(serializer.data)
 
-  elif request.method == 'POST':
-    print 'post request'
-    data = JSONParser().parse(request)
-    print str(data)
-    serializer = DefinitionSerializer(data=data)
+  def post(self, request, format=None):
+    print 'post method entered.'
+    serializer = DefinitionSerializer(data=request.data)
     if serializer.is_valid():
-      print 'VALID'
       serializer.save()
-      return JSONResponse(serializer.data, status=201)
-    else:
-      print 'NOT VALID'
-    return JSONResponse(serializer.errors, status=400)
+      return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
+'''
+#@csrf_exempt
 def definition_detail(request, pk):
   """
   Retrieve, update or delete a definition.
@@ -123,3 +131,5 @@ def definition_detail(request, pk):
   elif request.method == 'DELETE':
     single_definition.delete()
     return HttpResponse(status=204)
+
+'''
