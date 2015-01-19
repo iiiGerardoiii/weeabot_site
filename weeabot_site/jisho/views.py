@@ -8,6 +8,7 @@ from rest_framework.parsers import JSONParser
 from jisho.models import Definition
 from jisho.serializers import DefinitionSerializer
 from django.template import Context, RequestContext, loader
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def in_group(user, groupname):
@@ -25,11 +26,11 @@ def home(request):
     new_list = VocabularyList.objects.get(name=list_name)
     definition.lists.add(new_list)
     return HttpResponseRedirect('')
-
+  '''
   definitions = Definition.objects.all().order_by('timestamp').reverse()
   #first_date = definitions[len(definitions)-1].timestamp
   #last_date = definitions[0].timestamp
-  lists = VocabularyList.objects.all()
+  #lists = VocabularyList.objects.all()
   paginator = Paginator(definitions, 30) # Show 30 contacts per page
   page = request.GET.get('page')
   try:
@@ -40,13 +41,8 @@ def home(request):
   except EmptyPage:
     # If page is out of range (e.g. 9999), deliver last page of results.
     definitions = paginator.page(paginator.num_pages)
-  '''
+
   t = loader.get_template('jisho/index.html')
-  c = RequestContext(request, {
-    'title': 'Weeabot Jisho Lookups',
-    'description': 'Recent weeabot irc bot .jisho lookups',
-    })
-  '''
   c = RequestContext(request, {
     'title' : 'Weeabot Jisho Lookups',
     'description' : 'Recent weeabot irc bot .jisho lookups',
@@ -54,11 +50,11 @@ def home(request):
     #'last_date' : last_date,
     'definitions': definitions,
     'paginator' : paginator,
-    'lists' : lists,
-    'editable' : request.user.is_staff,
+    #'lists' : lists,
+    'editable' : False, #request.user.is_staff,
     'deleteable' : False,
+    'show_vocab_lists' : False,
     })
-  '''
   return HttpResponse(t.render(c))
 
 

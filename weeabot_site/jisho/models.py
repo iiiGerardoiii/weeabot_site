@@ -6,7 +6,7 @@ class Definition(models.Model):
   '''
   channel = models.CharField(max_length=128)
   nick = models.CharField(max_length=128)
-  timestamp = models.DateTimeField('date published', auto_now_add=True)
+  timestamp = models.DateTimeField(auto_now=True, auto_now_add=True)
   url = models.CharField(max_length=2048)
   text = models.CharField(max_length=256)
   word = models.CharField(max_length=128)
