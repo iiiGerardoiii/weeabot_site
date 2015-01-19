@@ -18,6 +18,8 @@ from rest_framework import status
 import sys, traceback
 
 from rest_framework import permissions
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import RetrieveAPIView
 
 
 def in_group(user, groupname):
@@ -70,7 +72,7 @@ def home(request):
 '''
 RESTful interface support
 '''
-
+'''
 class JSONResponse(HttpResponse):
   """
   An HttpResponse that renders its content into JSON.
@@ -79,57 +81,18 @@ class JSONResponse(HttpResponse):
     content = JSONRenderer().render(data)
     kwargs['content_type'] = 'application/json'
     super(JSONResponse, self).__init__(content, **kwargs)
-
-
-
-class DefinitionList(APIView):
-  '''
-  List all definitions, or create a new snippet.
-  '''
-  model = Definition
-
-  def get(self, request, format=None):
-    definitions = Definition.objects.all()
-    serializer = DefinitionSerializer(definitions, many=True)
-    return Response(serializer.data)
-
-  def post(self, request, format=None):
-    print 'post method entered.'
-    serializer = DefinitionSerializer(data=request.data)
-    if serializer.is_valid():
-      serializer.save()
-      return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 '''
-#@csrf_exempt
-def definition_detail(request, pk):
-  """
-  Retrieve, update or delete a definition.
-  """
-  try:
-    single_definition = Definition.objects.get(pk=pk)
-  except Definition.DoesNotExist:
-    return HttpResponse(status=404)
+class DefinitionList(ListCreateAPIView):
+  '''
+  List all definitions, or create a new definition.
+  '''
+  queryset = Definition.objects.all()
+  serializer_class = DefinitionSerializer
+  paginate_by = 10
 
-  if request.method == 'GET':
-    serializer = DefinitionSerializer(single_definition)
-    return JSONResponse(serializer.data)
-
-  elif request.method == 'PUT':
-    print 'definition_detail PUT'
-    data = JSONParser().parse(request)
-    serializer = DefinitionSerializer(single_definition, data=data)
-    if serializer.is_valid():
-      print 'serializer VALID'
-      serializer.save()
-      return JSONResponse(serializer.data)
-    else:
-      print 'serializer not valid'
-    return JSONResponse(serializer.errors, status=400)
-
-  elif request.method == 'DELETE':
-    single_definition.delete()
-    return HttpResponse(status=204)
-
-'''
+class DefinitionDetail(RetrieveAPIView):
+  '''
+  Show an individual definition by id
+  '''
+  queryset = Definition.objects.all()
+  serializer_class = DefinitionSerializer
