@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jisho',
+    'webms',
     'rest_framework',
     'djcelery',
 )
