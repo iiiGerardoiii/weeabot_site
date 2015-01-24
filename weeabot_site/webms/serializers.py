@@ -14,4 +14,3 @@ class WebmSerializer(serializers.ModelSerializer):
   class Meta:
     model = Webm
     fields = ['id', 'channel', 'nick', 'url', 'filename', 'name', 'desc', 'tags']
-

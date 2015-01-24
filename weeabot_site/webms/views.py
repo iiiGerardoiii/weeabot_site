@@ -18,11 +18,13 @@ from rest_framework import status
 import sys, traceback
 
 from rest_framework import permissions
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import CreateAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.generics import RetrieveAPIView
 
 from webms import tasks
-
+import urllib
+import json
 
 def in_group(user, groupname):
   return u.groups.filter(name=groupname).count() == 0
@@ -31,7 +33,7 @@ def in_group(user, groupname):
 RESTful interface support
 '''
 
-class WebmList(ListCreateAPIView):
+class WebmList(ListAPIView):
   '''
   List all webms or create a new entry
   '''
@@ -39,14 +41,29 @@ class WebmList(ListCreateAPIView):
   serializer_class = WebmSerializer
   paginate_by = 10
 
-  #def post(self, request, *args, **kwargs):
-  #  #initiate a download asynchronously
-  #  tasks.download.delay('http://i.4cdn.org/pol/1421793863465.jpg','', 'xxx.jpg')
-  #  return self.create(request, *args, **kwargs)
-
 class WebmDetail(RetrieveAPIView):
   '''
   Show a single webm database entry
   '''
   queryset = Webm.objects.all()
   serializer_class = WebmSerializer
+
+
+class NewWebmView(APIView):
+  '''Add a new webm. Kick off processes.
+  '''
+  #need to tie to a model to support permissions
+  queryset = Webm.objects.all()
+
+  def post(self, request, *args, **kwargs):
+    nick = request.DATA.get('nick', None)
+    url = request.DATA.get('url', None)
+    channel = request.DATA.get('channel', None)
+    #already an entry with this URL?
+    if Webm.objects.filter(url=url).count():
+      return Response({"success": False})
+    if nick and url and channel:
+      tasks.new_webm.delay(nick, channel, url, "")
+      return Response({"success": True})
+    else:
+      return Response({"success": False})

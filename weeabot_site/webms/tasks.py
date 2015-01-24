@@ -1,26 +1,69 @@
 from celery.task import task
 import requests
 import hashlib
+import os
+import random
+import string
+from webms.models import Webm
 
 BLOCKSIZE = 65536
 
-@task
-def add(x, y):
-    return x + y
+'''
+channel = models.CharField(max_length=128)
+  nick = models.CharField(max_length=128)
+  timestamp = models.DateTimeField(auto_now=True, auto_now_add=True)
+  url = models.CharField(max_length=2048)
+  filename = models.CharField(max_length=256)
+  filehash = models.CharField(max_length=128)
+  name = models.CharField(max_length=256)
+  desc = models.CharField(max_length=2048)
+  tags = models.ManyToManyField(Tag, related_name='webms', blank=True)
+
+'''
+
+def generate_new_random_filename(length=5, ext='.webm'):
+  filename = None
+  while not filename:
+    filename = ''.join(random.choice(string.lowercase) for x in range(length))
+    filename += ext
+    if Webm.objects.filter(filename=filename).count():
+      filename = None
+  return filename
+
 
 @task
-def download(url, path, filename):
-  #first fetch our file
+def new_webm(nick, channel, url, path):
+
+  #generate a random string name for this file
+  filename = generate_new_random_filename(length=5, ext='.webm')
+
+  #download the file
+  filepath = os.path.join(path, filename)
   r = requests.get(url)
-  with open(filename, "wb") as code:
+  with open(filepath, "wb") as code:
     code.write(r.content)
+  
   #form a hash over file contents to uniquely identify it
   hasher = hashlib.md5()
-  with open(filename, 'rb') as afile:
+  with open(filepath, 'rb') as afile:
     buf = afile.read(BLOCKSIZE)
     while len(buf) > 0:
-        hasher.update(buf)
-        buf = afile.read(BLOCKSIZE)
-  #Put the filename, type, hash etc into our database
-  #print("hash: " + hasher.hexdigest())
+      hasher.update(buf)
+      buf = afile.read(BLOCKSIZE)
+  filehash = hasher.hexdigest()
+
+  #does there ALREADY exist an entry in our database with this hash?
+  #(i.e. another binary equivalent file?)
+  if Webm.objects.filter(filehash=filehash).count():
+    return
+  
+  w = Webm()
+  w.url = url
+  w.nick = nick
+  w.channel = channel
+  w.filename = filename
+  w.filehash = filehash
+  w.name = ""
+  w.desc = ""
+  w.save()
 
