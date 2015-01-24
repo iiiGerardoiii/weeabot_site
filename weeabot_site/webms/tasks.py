@@ -8,7 +8,6 @@ from webms.models import Webm
 
 BLOCKSIZE = 65536
 MAX_FILESIZE_BYTES = 5000000
-788948
 
 '''
 channel = models.CharField(max_length=128)
@@ -63,6 +62,7 @@ def new_webm(nick, channel, url, path):
   #does there ALREADY exist an entry in our database with this hash?
   #(i.e. another binary equivalent file?)
   if Webm.objects.filter(filehash=filehash).count():
+    os.remove(filepath)
     #TODO: LOG SOMETHING
     return
   
