@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(template_name='weeabot_site/index.html'),
       name='home'),
     url(r'^jisho/', include('jisho.urls')),
+    url(r'^webms/', include('webms.urls')),
     #url(r'^$', 'weeabot_site.views.home', name='home'),
     #url(r'^jisho/', include('jisho.urls')),
 
