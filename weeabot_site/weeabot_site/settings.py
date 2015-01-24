@@ -102,7 +102,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
-    #'/var/www/static/',
+    #'/var/www/weeabot_site/static/',
 )
 
 

@@ -10,16 +10,8 @@ BLOCKSIZE = 65536
 MAX_FILESIZE_BYTES = 5000000
 
 '''
-channel = models.CharField(max_length=128)
-  nick = models.CharField(max_length=128)
-  timestamp = models.DateTimeField(auto_now=True, auto_now_add=True)
-  url = models.CharField(max_length=2048)
-  filename = models.CharField(max_length=256)
-  filehash = models.CharField(max_length=128)
-  name = models.CharField(max_length=256)
-  desc = models.CharField(max_length=2048)
-  tags = models.ManyToManyField(Tag, related_name='webms', blank=True)
-
+to run the celery task daemon in debug, run:
+python manage.py celeryd -l info
 '''
 
 def generate_new_random_filename(length=5, ext='.webm'):
