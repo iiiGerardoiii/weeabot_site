@@ -7,6 +7,8 @@ import string
 from webms.models import Webm
 
 BLOCKSIZE = 65536
+MAX_FILESIZE_BYTES = 5000000
+788948
 
 '''
 channel = models.CharField(max_length=128)
@@ -33,6 +35,12 @@ def generate_new_random_filename(length=5, ext='.webm'):
 
 @task
 def new_webm(nick, channel, url, path):
+  #first see if this file is not too large by fetching the header only
+  header_response = requests.head(url)
+  sz = int(header_response.headers['content-length'])
+  if sz > MAX_FILESIZE_BYTES:
+    #TODO: LOG SOMETHING
+    return
 
   #generate a random string name for this file
   filename = generate_new_random_filename(length=5, ext='.webm')
@@ -55,6 +63,7 @@ def new_webm(nick, channel, url, path):
   #does there ALREADY exist an entry in our database with this hash?
   #(i.e. another binary equivalent file?)
   if Webm.objects.filter(filehash=filehash).count():
+    #TODO: LOG SOMETHING
     return
   
   w = Webm()
