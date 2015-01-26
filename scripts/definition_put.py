@@ -14,10 +14,19 @@ def main():
   user = args.user
   password = args.password
 
-  payload = {'channel': '#/jp/shows', 'nick': 'on-three', 'url':'www.jisho.org', 'text':'どこ','word':'doko'}
+  payload = {
+    'channel' : '#/jp/shows',
+    'nick' : 'on-three',
+    'url' : 'www.jisho.org',
+    'kanji' : '何処',
+    'romaji' : 'doko',
+    'kana' : 'どこ',
+    'text' : 'where',
+    'word' : 'doko',
+    }
   headers = {'content-type': 'application/json'}
 
-  r = requests.post("http://127.0.0.1:8000/jisho/api/", 
+  r = requests.post("http://127.0.0.1/jisho/api/", 
       auth=(user,password),
       data=json.dumps(payload),headers=headers)
 

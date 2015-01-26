@@ -4,6 +4,6 @@ from jisho.models import Definition
 
 
 class DefinitionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Definition
-        fields = ('id', 'channel', 'nick', 'url', 'text', 'word')
+  class Meta:
+    model = Definition
+    fields = ('id', 'channel', 'nick', 'url', 'kana', 'kanji', 'romaji', 'text', 'word')
