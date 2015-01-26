@@ -8,7 +8,10 @@ class Definition(models.Model):
   nick = models.CharField(max_length=128)
   timestamp = models.DateTimeField(auto_now=True, auto_now_add=True)
   url = models.CharField(max_length=2048)
-  text = models.CharField(max_length=256)
+  kanji = models.CharField(max_length=32, default='')
+  kana = models.CharField(max_length=64, default='')
+  romaji = models.CharField(max_length=128, default='')
+  text = models.CharField(max_length=256)#english text
   word = models.CharField(max_length=128)
   
   def __unicode__(self):

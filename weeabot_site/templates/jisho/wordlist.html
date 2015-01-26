@@ -10,6 +10,9 @@
     <th class="nick">Nick</th>
     {% endif %}
     <th class='word'>Lookup</th>
+    <th class='word'>Kanji</th>
+    <th class='word'>Kana</th>
+    <th class='word'>Romaji</th>
     <th class='text'>Definition</th>
     <th class='url'>URL</th>
     {% if show_vocab_lists %}
@@ -32,6 +35,9 @@
   <td class="nick"><a href="nick/{{ definition.simple_nick }}">{{ definition.simple_nick }}</a></td>
   {% endif %}
   <td class='word'>{{ definition.word }}</td>
+  <td class='word'>{{ definition.kanji }}</td>
+  <td class='word'>{{ definition.kana }}</td>
+  <td class='word'>{{ definition.romaji }}</td>
   <td class='text'>{{ definition.text }}</td>
   <td class='url'><a href="{{ definition.url }}" target="_blank">link</a></td>
   
