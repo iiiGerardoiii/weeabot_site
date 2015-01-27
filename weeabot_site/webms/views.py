@@ -26,6 +26,8 @@ from webms import tasks
 import urllib
 import json
 
+from django.conf import settings
+
 def in_group(user, groupname):
   return u.groups.filter(name=groupname).count() == 0
 
@@ -63,7 +65,7 @@ class NewWebmView(APIView):
     if Webm.objects.filter(url=url).count():
       return Response({"success": False})
     if nick and url and channel:
-      tasks.new_webm.delay(nick, channel, url, "")
+      tasks.new_webm.delay(nick, channel, url, settings.WEBMS_DOWNLOAD_DIR)
       return Response({"success": True})
     else:
       return Response({"success": False})

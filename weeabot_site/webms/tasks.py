@@ -32,7 +32,6 @@ def new_webm(nick, channel, url, path):
   if sz > MAX_FILESIZE_BYTES:
     #TODO: LOG SOMETHING
     return
-
   #generate a random string name for this file
   filename = generate_new_random_filename(length=5, ext='.webm')
 
@@ -41,7 +40,6 @@ def new_webm(nick, channel, url, path):
   r = requests.get(url)
   with open(filepath, "wb") as code:
     code.write(r.content)
-  
   #form a hash over file contents to uniquely identify it
   hasher = hashlib.md5()
   with open(filepath, 'rb') as afile:
