@@ -33,7 +33,8 @@ def new_webm(nick, channel, url, path):
     #TODO: LOG SOMETHING
     return
   #generate a random string name for this file
-  filename = generate_new_random_filename(length=5, ext='.webm')
+  ext = os.path.splitext(url)[1]
+  filename = generate_new_random_filename(length=5, ext=ext)
 
   #download the file
   filepath = os.path.join(path, filename)
