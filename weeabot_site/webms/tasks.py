@@ -18,8 +18,9 @@ def generate_new_random_filename(length=5, ext='.webm'):
   filename = None
   while not filename:
     filename = ''.join(random.choice(string.lowercase) for x in range(length))
-    filename += ext
-    if Webm.objects.filter(filename=filename).count():
+    #filename += ext
+    target = filename + ext
+    if Webm.objects.filter(filename=target).count():
       filename = None
   return filename
 
@@ -34,7 +35,8 @@ def new_webm(nick, channel, url, path):
     return
   #generate a random string name for this file
   ext = os.path.splitext(url)[1]
-  filename = generate_new_random_filename(length=5, ext=ext)
+  filebase = generate_new_random_filename(length=5, ext=ext)
+  filename = filebase + ext
 
   #download the file
   filepath = os.path.join(path, filename)
@@ -56,6 +58,12 @@ def new_webm(nick, channel, url, path):
     os.remove(filepath)
     #TODO: LOG SOMETHING
     return
+
+  #lastly, generate a thumbnail image
+  thumbnail_filename = filebase+"s.jpg"
+  thumbnail_filepath = os.path.join(path, thumbnail_filename)
+  call = 'ffmpeg -i {filename} -vf scale=128:-1 -vframes 1 {thumb}'.format(filename=filepath,thumb=thumbnail_filepath)
+  os.system(call)
   
   w = Webm()
   w.url = url
@@ -65,5 +73,6 @@ def new_webm(nick, channel, url, path):
   w.filehash = filehash
   w.name = ""
   w.desc = ""
+  w.thumbnail = thumbnail_filename
   w.save()
 

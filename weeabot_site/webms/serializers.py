@@ -13,4 +13,4 @@ class WebmSerializer(serializers.ModelSerializer):
   tags = TagSerializer(many=True, read_only = True)
   class Meta:
     model = Webm
-    fields = ['id', 'channel', 'nick', 'url', 'filename', 'name', 'desc', 'tags']
+    fields = ['id', 'channel', 'nick', 'url', 'filename', 'name', 'desc', 'tags', 'thumbnail']

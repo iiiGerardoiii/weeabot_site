@@ -25,8 +25,8 @@ def main():
             'url': url,  
             }
   headers = {'content-type': 'application/json'}
-  url = 'http://i.4cdn.org/tv/1421999777594.jpg'
-  r = requests.post("http://127.0.0.1:8000/webms/new/", 
+  
+  r = requests.post("http://127.0.0.1/webms/new/", 
     auth=(user,password),
     data=json.dumps(payload),headers=headers)
 
