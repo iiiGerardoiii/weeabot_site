@@ -1,0 +1,48 @@
+{% if not images %}
+<p class="message">No images to display.</p>
+{% else %}
+{% block thumbnails %}
+<table class="thumbnails">
+<tbody>
+  <tr>
+  {% for image in images %}
+    <td>
+    <a href="/static/webms/{{ image.filename }}">
+      <img src="/static/webms/{{ image.thumbnail }}" alt="some image" style="width:128px;height:128px;border:0">
+    </a>
+    </td>
+    {% if forloop.counter|divisibleby:7 %}
+    </tr>
+    <tr>
+    {% endif %}
+  {% endfor %}
+  </tr>
+</tbody>
+<tfoot>
+  <tr><td class="footer" colspan="100%">
+Images as of {{ first_date }}.<br>
+Last lookup on {{ last_date }}.</td></tr>
+Currently only staff users can delete images.
+</tfoot>
+</table>
+{% endblock %}
+
+{% block pagination %}
+<div class="pagination">
+    <span class="step-links">
+        {% if images.has_previous %}
+            <a href="?page={{ images.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ images.number }} of {{ images.paginator.num_pages }}.
+        </span>
+
+        {% if images.has_next %}
+            <a href="?page={{ images.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
+{% endif %}
+

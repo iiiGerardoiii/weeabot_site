@@ -22,6 +22,7 @@ class Webm(models.Model):
   name = models.CharField(max_length=256)
   desc = models.CharField(max_length=2048)
   tags = models.ManyToManyField(Tag, related_name='webms', blank=True)
+  thumbnail = models.CharField(max_length=256, default='missing.jpg')
   
   def __unicode__(self):
     return self.name

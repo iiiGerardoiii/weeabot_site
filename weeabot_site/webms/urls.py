@@ -4,7 +4,7 @@ from webms import views
 from django.conf.urls import include
 
 urlpatterns = [
-  #url(r'^$', 'jisho.views.home', name='home'),
+  url(r'^$', 'webms.views.home', name='home'),
   #url(r'^vocab/$', 'jisho.views.VocabularyListsView', name='VocabularyListsView'),
   #url(r'^vocab/(?P<listname>\w+)', 'jisho.views.VocabularyListsView', name='VocabularyListView'),
   #url(r'^nick/(?P<nick>\w+)', 'jisho.views.NickView', name='NickView'),
