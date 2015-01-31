@@ -7,7 +7,7 @@ import string
 from webms.models import Webm
 
 BLOCKSIZE = 65536
-MAX_FILESIZE_BYTES = 5000000
+MAX_FILESIZE_BYTES = 8000000
 
 '''
 to run the celery task daemon in debug, run:
@@ -23,7 +23,6 @@ def generate_new_random_filename(length=5, ext='.webm'):
     if Webm.objects.filter(filename=target).count():
       filename = None
   return filename
-
 
 @task
 def new_webm(nick, channel, url, path):
@@ -64,6 +63,9 @@ def new_webm(nick, channel, url, path):
   thumbnail_filepath = os.path.join(path, thumbnail_filename)
   call = 'ffmpeg -i {filename} -vf scale=128:-1 -vframes 1 {thumb}'.format(filename=filepath,thumb=thumbnail_filepath)
   os.system(call)
+  #if the resultant file is not present, it must have been an audio file or something
+  if not os.path.isfile(thumbnail_filepath):
+    thumbnail_filename='missing.jpg'
   
   w = Webm()
   w.url = url

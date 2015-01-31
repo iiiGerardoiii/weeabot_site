@@ -19,8 +19,8 @@ class Webm(models.Model):
   url = models.CharField(max_length=2048)
   filename = models.CharField(max_length=256)
   filehash = models.CharField(max_length=128)
-  name = models.CharField(max_length=256)
-  desc = models.CharField(max_length=2048)
+  name = models.CharField(max_length=256, default="unnamed")
+  desc = models.CharField(max_length=2048, default="no description")
   tags = models.ManyToManyField(Tag, related_name='webms', blank=True)
   thumbnail = models.CharField(max_length=256, default='missing.jpg')
   
