@@ -234,3 +234,21 @@ table.rounded, td.rounded{
     padding: 5px;
 }
 
+.thumbnails {
+  overflow:hidden;
+}
+
+.square {
+    float:left;
+    /*width: 128px;*/
+    height: 128px;
+    overflow:hidden;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+
+.webm {
+  height: 100%;
+  max-height:128px;
+  min-width:128px;
+}
