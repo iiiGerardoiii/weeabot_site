@@ -55,7 +55,9 @@ def new_webm(nick, channel, url, path):
   #(i.e. another binary equivalent file?)
   if Webm.objects.filter(filehash=filehash).count():
     os.remove(filepath)
-    #TODO: LOG SOMETHING
+    w = Webm.objects.get(filehash=filehash)
+    w.hits = w.hits + 1
+    w.save()
     return
 
   #lastly, generate a thumbnail image

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import F
 
 # Create your views here.
 from django.http import HttpResponse
@@ -34,7 +35,7 @@ def in_group(user, groupname):
 
 def home(request):
   #handling post dropdown result
-  images = Webm.objects.all().order_by('timestamp').reverse()
+  images = Webm.objects.all()
   #first_date = definitions[len(definitions)-1].timestamp
   #last_date = definitions[0].timestamp
   #lists = VocabularyList.objects.all()
@@ -98,7 +99,10 @@ class NewWebmView(APIView):
     channel = request.DATA.get('channel', None)
     #already an entry with this URL?
     if Webm.objects.filter(url=url).count():
-      return Response({"success": False})
+      w = Webm.objects.get(url=url)
+      w.hits = w.hits + 1
+      w.save()
+      return Response({"success": True})
     if nick and url and channel:
       tasks.new_webm.delay(nick, channel, url, settings.WEBMS_DOWNLOAD_DIR)
       return Response({"success": True})
