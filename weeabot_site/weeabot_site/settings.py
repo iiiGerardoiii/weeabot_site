@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'jisho',
     'webms',
+    'youtubes',
     'rest_framework',
     'djcelery',
 )

@@ -1,0 +1,7 @@
+{% extends 'weeabot_site/base.html' %}
+
+{% block content %}
+  {% with show_nicks=False %}
+    {% include "youtubes/list.html" %}
+  {% endwith %}
+{% endblock %}
