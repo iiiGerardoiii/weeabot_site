@@ -1,0 +1,31 @@
+
+{% block content %}
+	<table class="urls bordered">
+    <thead class='definitions'>
+        <th class="name">Info</th>
+        <th class="name">Preview</th>
+    </thead>
+    <tbody>
+    {% for y in youtubes %}
+      <tr class='definition'>
+        <td>
+          {{ y.timestamp }}<br>
+          {{ y.channel }}<br>
+          {% if show_nicks %}
+          <a href="nick/{{ y.simple_nick }}">{{ y.simple_nick }}</a><br>
+          {% endif %}
+          <a href="{{ y.url }}">{{ y.url }}</a><br>
+        </td>
+        <td>
+          <a href="{{ y.url }}"><img src="{{ y.thumbnail }}"><img></a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+          <td class="footer" colspan=2></td>
+        </tr>
+    </tfoot>
+    </table>
+{% endblock %}
