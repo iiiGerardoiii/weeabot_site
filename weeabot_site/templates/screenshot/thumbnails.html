@@ -4,10 +4,12 @@
 {% block thumbnails %}
 <div class="thumbnails">
 {% for image in images %}
-  <div class="square">
+  <div class="screenshot">
     <a href="/static/screenshot/{{ image.filename }}">
-    <img class="webm" src="/static/screenshot/{{ image.thumbnail }}" alt="{{ image.filename }}">
-    </a>
+    <img class="screenshot" src="/static/screenshot/{{ image.thumbnail }}" alt="{{ image.filename }}">
+    </a><br>
+    Taken: {{ image.timestamp }}
+    <hr>
   </div>
 {% endfor %}
 </div>

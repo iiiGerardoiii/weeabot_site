@@ -252,3 +252,10 @@ table.rounded, td.rounded{
   max-height:128px;
   min-width:128px;
 }
+
+.screenshot {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center
+}
