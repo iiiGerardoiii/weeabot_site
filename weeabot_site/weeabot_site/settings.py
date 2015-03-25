@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'jisho',
     'webms',
     'youtubes',
+    'screenshot',
     'rest_framework',
     'djcelery',
 )
@@ -107,7 +108,7 @@ STATICFILES_DIRS = (
 
 #download destination for webms plugin
 WEBMS_DOWNLOAD_DIR = os.path.join(STATIC_ROOT, "webms/")
-
+SCREENSHOT_DOWNLOAD_DIR = os.path.join(STATIC_ROOT, "screenshot/")
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
