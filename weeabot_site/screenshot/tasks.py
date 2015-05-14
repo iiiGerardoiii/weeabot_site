@@ -33,7 +33,7 @@ def take_screenshot(nick, channel, url, path):
   filename = filebase + ".jpg"
   #take the screenshot
   filepath = os.path.join(path, filename)
-  call = 'ffmpeg -ss 00:00:08 -i {url} -r 1 -vframes 1 {filename}'.format(url=url, filename=filepath)
+  call = 'ffmpeg -ss 00:00:10 -i {url} -r 1 -vframes 1 {filename}'.format(url=url, filename=filepath)
   os.system(call)
 
   #if we didn't get a thumbnail stream must be down or something
