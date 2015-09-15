@@ -56,6 +56,6 @@ def scrape_youtube_id(url):
 @receiver(pre_save, sender=Youtube)
 def generate_youtube_id(sender, instance, *args, **kwargs):
     id = scrape_youtube_id(instance.url)
-    instance.thumbnail = 'http://img.youtube.com/vi/{id}/default.jpg'.format(id=id)
+    instance.thumbnail = 'http://i.ytimg.com/vi/{id}/mqdefault.jpg'.format(id=id)
     instance.name = id 
 
